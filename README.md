@@ -17,13 +17,16 @@ Este es el frontend desarrollado en **Angular moderno (standalone + signals)** p
 - Angular CLI >= 17
 - URL del repositorio donde encontrar el backend https://github.com/nicolasAG54/solicitudes-service
 
+- ![image_alt](https://github.com/nicolasAG54/solicitudes-web/blob/ba426ab920c67e479ac938c113ca09a4543a7d28/previewApp.png?raw=true)
+
 ## ⚡ Instalación
 
 Clona el repositorio y ejecuta:
 
 ```bash
 npm install
-![image_alt](https://github.com/nicolasAG54/solicitudes-web/blob/ba426ab920c67e479ac938c113ca09a4543a7d28/previewApp.png?raw=true)
+
+
 
 
 
