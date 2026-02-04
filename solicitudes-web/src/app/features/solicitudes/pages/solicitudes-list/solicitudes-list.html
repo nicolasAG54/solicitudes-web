@@ -1,49 +1,79 @@
 <mat-card>
   <mat-card-title>Solicitudes</mat-card-title>
-
-  <div class="table-container" *ngIf="solicitudes.length; else empty">
-    <table mat-table [dataSource]="solicitudes" class="mat-elevation-z1">
-
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>#</th>
-        <td mat-cell *matCellDef="let s">{{ s.id }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="titulo">
-        <th mat-header-cell *matHeaderCellDef>Título</th>
-        <td mat-cell *matCellDef="let s">{{ s.titulo }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef>Estado</th>
-        <td mat-cell *matCellDef="let s">
-          <span class="estado" [class]="s.estado.toLowerCase()">
-            {{ s.estado }}
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="fecha">
-        <th mat-header-cell *matHeaderCellDef>Fecha</th>
-        <td mat-cell *matCellDef="let s">{{ s.fecha }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef>
-          <button mat-icon-button color="primary">
-            <mat-icon>visibility</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-    </table>
+  @if (isLoading()) {
+    <div class="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+  }
+  <div class="buttons-top-container">
+    <button mat-stroked-button color="primary" (click)="toggleRole()">
+      Cambiar rol (actual: {{ authService.getRole() }})
+    </button>
+    @if (authService.getRole() == 'agente') {
+      <div class="button-create-container">
+        <button mat-raised-button color="primary" (click)="openCreateModal()">
+          Crear Solicitud <mat-icon>add_box</mat-icon>
+        </button>
+      </div>
+    }
   </div>
 
-  <ng-template #empty>
-    <p class="empty">No hay solicitudes registradas</p>
-  </ng-template>
+  @if (solicitudes().length) {
+    <div class="table-container">
+      <table mat-table [dataSource]="solicitudes()" class="mat-elevation-z1">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>id</th>
+          <td mat-cell *matCellDef="let s">{{ s.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="titulo">
+          <th mat-header-cell *matHeaderCellDef>Título</th>
+          <td mat-cell *matCellDef="let s">{{ s.titulo }}</td>
+        </ng-container>
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let s">
+            <span class="estado" [class]="s.estado.toLowerCase().replace(' ', '-')">
+              {{ s.estado }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="prioridad">
+          <th mat-header-cell *matHeaderCellDef>Prioridad</th>
+          <td mat-cell *matCellDef="let s">
+            @if (authService.getRole() == 'supervisor') {
+              <span class="prioridad" [class]="s.prioridad">
+                {{ s.prioridad }}
+              </span>
+            }
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let s">{{ s.fechaCreacion | date: 'dd/MM/yyyy' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let s">
+            <button
+              (click)="openDetalle(s.id)"
+              matTooltip="Ver detalles"
+              mat-icon-button
+              color="primary"
+            >
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns()"></tr>
+      </table>
+    </div>
+  } @else {
+    <ng-template>
+      <p class="empty">No hay solicitudes registradas</p>
+    </ng-template>
+  }
 </mat-card>

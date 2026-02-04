@@ -1,47 +1,101 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-
-interface Solicitud {
-  id: number;
-  titulo: string;
-  estado: 'Pendiente' | 'Aprobada' | 'Rechazada';
-  fecha: string;
-}
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltip } from '@angular/material/tooltip';
+import { SolicitudesService } from '../../Services/solicitudes';
+import { Solicitud } from '../../models/solicitud.model';
+import { MatDialog } from '@angular/material/dialog';
+import { SolicitudesForm } from '../solicitudes-form/solicitudes-form';
+import { SolicitudesDetail } from '../solicitudes-detail/solicitudes-detail';
+import { AuthService } from '../../../../core/auth/auth.service';
 
 @Component({
   selector: 'app-solicitudes-list',
+  standalone: true,
   imports: [
     CommonModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    MatProgressSpinnerModule,
+    MatTooltip,
   ],
   templateUrl: './solicitudes-list.html',
-  styleUrls: ['./solicitudes-list.scss']
+  styleUrls: ['./solicitudes-list.scss'],
 })
-export class SolicitudesList {
+export class SolicitudesList implements OnInit {
+  private solicitudesService = inject(SolicitudesService);
+  private dialog = inject(MatDialog);
+  public authService = inject(AuthService);
+  // Signals inicializados una sola vez
+  solicitudes = signal<Solicitud[]>([]);
+  isLoading = signal(true);
 
-  displayedColumns = ['id', 'titulo', 'estado', 'fecha', 'acciones'];
+  displayedColumns = computed(() =>
+    this.authService.getRole() === 'agente'
+      ? ['titulo', 'estado', 'fecha', 'acciones']
+      : ['titulo','estado','prioridad', 'fecha', 'acciones'],
+  );
 
-  solicitudes: Solicitud[] = [
-    {
-      id: 1,
-      titulo: 'Solicitud de vacaciones',
-      estado: 'Pendiente',
-      fecha: '2025-01-10'
-    },
-    {
-      id: 2,
-      titulo: 'Compra de equipo',
-      estado: 'Aprobada',
-      fecha: '2025-01-08'
-    }
-  ];
+  ngOnInit(): void {
+    this.loadSolicitudes();
+  }
 
+  loadSolicitudes() {
+    this.isLoading.set(true);
+
+    this.solicitudesService.getAll().subscribe({
+      next: (response) => {
+        console.log(response);
+        const mapped = response.data.map((item) => ({
+          id: item.id,
+          titulo: item.titulo,
+          estado: item.estado,
+          fechaCreacion: item.fechaCreacion,
+          prioridad: item.prioridad,
+        }));
+
+        setTimeout(() => {
+          this.solicitudes.set(mapped);
+          this.isLoading.set(false);
+        });
+      },
+      error: () => {
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  openCreateModal() {
+    const dialogRef = this.dialog.open(SolicitudesForm, {
+      width: '400px',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        // Refrescar lista después de cerrar modal
+        this.loadSolicitudes();
+      }
+    });
+  }
+
+  openDetalle(solicitudId: number) {
+    this.dialog.open(SolicitudesDetail, {
+      width: '500px',
+      data: { solicitudId },
+    });
+    this.dialog.afterAllClosed.subscribe(() => {
+      this.loadSolicitudes();
+    });
+  }
+  toggleRole() {
+    const nuevo = this.authService.getRole() === 'agente' ? 'supervisor' : 'agente';
+    this.authService.setRole(nuevo);
+  }
 }

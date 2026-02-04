@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink } from '@angular/router';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map } from 'rxjs/operators';
-
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +16,7 @@ import { AsyncPipe } from '@angular/common';
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    MatListModule],
+    MatListModule,RouterLink],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.scss',
 })

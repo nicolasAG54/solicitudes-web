@@ -1,0 +1,38 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;    
+    background-image: url('/img/backgroundLogin.jpg');
+}
+
+.cardcontent {
+    padding-top: 16px;
+    text-align: center;
+    justify-items: center;
+}
+
+.backgroundborder {
+    background-color: #080A83 !important;
+}
+.custom-corner-card {
+  background: var(--mat-sys-surface-container-low);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 48px; // Ajusta el tamaño
+    height: 48px;
+    background: #010044; // El color que desees para la esquina
+    border-top-left-radius: 8px; // Opcional
+    z-index: 0;
+    pointer-events: none;
+  }
+}

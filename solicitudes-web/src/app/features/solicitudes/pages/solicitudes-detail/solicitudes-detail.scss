@@ -1,0 +1,59 @@
+.dialog-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 420px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 12px;
+    background: #f7f7f7;
+    border-radius: 8px;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    font-size: 13px;
+}
+
+.info-item span {
+    color: #666;
+    font-size: 12px;
+}
+
+.dialog-actions {
+    margin-top: 8px;
+}
+
+.loading {
+    padding: 24px;
+    text-align: center;
+}
+
+h2 {
+    margin-left: 1.5em;
+}
+
+.btn-refuse {
+    background: rgb(179, 40, 40);
+    color: white;
+}
+
+.buttons-container {
+    margin-right: 11%;
+}

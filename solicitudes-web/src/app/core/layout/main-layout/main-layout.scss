@@ -1,7 +1,18 @@
 .layout-container {
   height: 100vh;
+  max-width: 2000px;
+  margin: 0 auto;
 }
 
 .content {
-  padding: 16px;
+  padding: 16px; 
+  
+}
+
+.container-options {
+  display: flex;
+  gap: 8px;
+}
+.active-link {
+  background: rgba(255, 255, 255, 0.1);
 }

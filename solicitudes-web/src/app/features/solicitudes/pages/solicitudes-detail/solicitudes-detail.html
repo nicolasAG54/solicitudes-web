@@ -1,1 +1,65 @@
-<p>solicitudes-detail works!</p>
+<h2 mat-dialog-title class="dialog-title">Detalle de Solicitud</h2>
+
+@if (!loading()) {
+  <mat-dialog-content class="dialog-content">
+    <form [formGroup]="form" class="form-section">
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Título</mat-label>
+        <input matInput formControlName="titulo" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput rows="3" formControlName="descripcion"></textarea>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Prioridad</mat-label>
+        <mat-select formControlName="prioridad">
+          <mat-option value="Alta">Alta</mat-option>
+          <mat-option value="Media">Media</mat-option>
+          <mat-option value="Baja">Baja</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+    <div class="info-section">
+      <div class="info-item">
+        <span>Estado</span>
+        <strong>{{ solicitud()?.estado }}</strong>
+      </div>
+
+      <div class="info-item">
+        <span>Creado</span>
+        <strong>{{ solicitud()?.fechaCreacion | date: 'short' }}</strong>
+      </div>
+
+      <div class="info-item">
+        <span>Actualizado</span>
+        <strong>{{ solicitud()?.fechaActualizacion | date: 'short' }}</strong>
+      </div>
+    </div>
+
+    <mat-dialog-actions align="end" class="dialog-actions">
+      @if (!editMode() && authService.getRole() == 'agente' && solicitud()?.estado == 'Pendiente') {
+        <button mat-flat-button color="primary" (click)="enableEdit()">Editar</button>
+      }
+      @if (!editMode() && authService.getRole() == 'supervisor') {
+        <div class="buttons-container">
+          <button mat-flat-button color="primary" (click)="aceptar()">Aceptar</button>
+          <button class="btn-refuse" mat-button (click)="rechazar()">Rechazar</button>
+        </div>
+      }
+      @if (!editMode()) {
+        <button mat-button (click)="close()">Cerrar</button>
+      }
+
+      @if (editMode()) {
+        <button mat-flat-button color="primary" (click)="save()">Guardar</button>
+        <button mat-button (click)="closeEdit()">Cancelar</button>
+      }
+    </mat-dialog-actions>
+  </mat-dialog-content>
+} @else {
+  <p class="loading">Cargando...</p>
+}

@@ -1,3 +1,9 @@
+.loading {
+    display: flex;
+    justify-content: center;
+    padding: 32px;
+}
+
 .table-container {
     overflow-x: auto;
 }
@@ -16,12 +22,35 @@ mat-card {
         background-color: #ff9800;
     }
 
-    &.aprobada {
+    &.resuelta {
         background-color: #4caf50;
     }
 
     &.rechazada {
         background-color: #f44336;
+    }
+
+    &.en-proceso {
+        background-color: #2196f3;
+    }
+}
+
+.prioridad {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: white;
+
+    &.Media {
+        background-color: #ff9800;
+    }
+
+    &.Alta {
+        background-color: #f44336;
+    }
+
+    &.Baja {
+        background-color: #2196f3;
     }
 }
 
@@ -29,4 +58,27 @@ mat-card {
     text-align: center;
     padding: 24px;
     color: gray;
+}
+
+.button-create-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+
+}
+
+.buttons-top-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+@media (max-width: 950px) {
+    .en-proceso{
+        font-size: 10px;
+    }
 }

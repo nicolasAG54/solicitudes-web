@@ -1,0 +1,41 @@
+<div class="login-container">
+  <mat-card class="custom-corner-card" style="max-width: 400px; margin: 4rem auto">
+    
+    <img style="height: 150px;" class="backgroundborder"
+      mat-card-image
+      src="/img/backgroundCardLogin.png"
+      alt="login photo"
+    />
+    <mat-card-content >
+      <form class="cardcontent" [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" />
+          @if (form.controls.email.invalid) {
+            <mat-error> Email inválido </mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
+        @if (error) {
+          <p style="color: red; margin-top: 0.5rem">
+            {{ error }}
+          </p>
+        }
+        <mat-card-actions>
+          <button
+            mat-raised-button
+            color="primary"
+            class="w-100"
+            type="submit"
+            [disabled]="loading || form.controls.email.invalid || form.controls.password.invalid"
+          >
+            {{ loading ? 'Ingresando…' : 'Entrar' }}
+          </button>
+        </mat-card-actions>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
