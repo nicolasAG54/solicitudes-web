@@ -23,5 +23,6 @@ Clona el repositorio y ejecuta:
 
 ```bash
 npm install
-![image_alt](https://github.com/nicolasAG54/solicitudes-web/blob/ba426ab920c67e479ac938c113ca09a4543a7d28/previewApp.png![image_alt]())
+![image_alt](https://github.com/nicolasAG54/solicitudes-web/blob/ba426ab920c67e479ac938c113ca09a4543a7d28/previewApp.png)
+
 
